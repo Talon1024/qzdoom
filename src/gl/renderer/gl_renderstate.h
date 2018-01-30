@@ -1,4 +1,4 @@
-// 
+//
 //---------------------------------------------------------------------------
 //
 // Copyright(C) 2009-2016 Christoph Oelckers
@@ -108,6 +108,7 @@ class FRenderState
 	PalEntry mFogColor;
 	PalEntry mObjectColor;
 	PalEntry mObjectColor2;
+	uint16_t mSpecialColorFlags;
 	FStateVec4 mDynColor;
 	float mClipSplit[2];
 

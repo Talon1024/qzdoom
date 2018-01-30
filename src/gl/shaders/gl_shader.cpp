@@ -1,4 +1,4 @@
-// 
+//
 //---------------------------------------------------------------------------
 //
 // Copyright(C) 2004-2016 Christoph Oelckers
@@ -167,7 +167,7 @@ bool FShader::Load(const char * name, const char * vert_prog_lump, const char * 
 	}
 
 	hVertProg = glCreateShader(GL_VERTEX_SHADER);
-	hFragProg = glCreateShader(GL_FRAGMENT_SHADER);	
+	hFragProg = glCreateShader(GL_FRAGMENT_SHADER);
 
 	FGLDebug::LabelObject(GL_SHADER, hVertProg, vert_prog_lump);
 	FGLDebug::LabelObject(GL_SHADER, hFragProg, frag_prog_lump);
@@ -203,18 +203,18 @@ bool FShader::Load(const char * name, const char * vert_prog_lump, const char * 
 	glLinkProgram(hShader);
 
 	glGetShaderInfoLog(hVertProg, 10000, NULL, buffer);
-	if (*buffer) 
+	if (*buffer)
 	{
 		error << "Vertex shader:\n" << buffer << "\n";
 	}
 	glGetShaderInfoLog(hFragProg, 10000, NULL, buffer);
-	if (*buffer) 
+	if (*buffer)
 	{
 		error << "Fragment shader:\n" << buffer << "\n";
 	}
 
 	glGetProgramInfoLog(hShader, 10000, NULL, buffer);
-	if (*buffer) 
+	if (*buffer)
 	{
 		error << "Linking:\n" << buffer << "\n";
 	}
@@ -248,6 +248,7 @@ bool FShader::Load(const char * name, const char * vert_prog_lump, const char * 
 	muGlowTopPlane.Init(hShader, "uGlowTopPlane");
 	muSplitBottomPlane.Init(hShader, "uSplitBottomPlane");
 	muSplitTopPlane.Init(hShader, "uSplitTopPlane");
+	muSpecialColorFlags.Init(hShader, "uSpecialColorFlags");
 	muClipLine.Init(hShader, "uClipLine");
 	muFixedColormap.Init(hShader, "uFixedColormap");
 	muInterpolationFactor.Init(hShader, "uInterpolationFactor");
@@ -373,7 +374,7 @@ void FShader::ApplyMatrices(VSMatrix *proj, VSMatrix *view, VSMatrix *norm)
 //
 //
 //==========================================================================
-struct FDefaultShader 
+struct FDefaultShader
 {
 	const char * ShaderName;
 	const char * gettexelfunc;
@@ -382,7 +383,7 @@ struct FDefaultShader
 
 // Note: the MaterialShaderIndex enum in gl_shader.h needs to be updated whenever this array is modified.
 static const FDefaultShader defaultshaders[]=
-{	
+{
 	{"Default",	"shaders/glsl/func_normal.fp", ""},
 	{"Warp 1",	"shaders/glsl/func_warp1.fp", ""},
 	{"Warp 2",	"shaders/glsl/func_warp2.fp", ""},
@@ -695,7 +696,7 @@ void gl_ParseHardwareShader(FScanner &sc, int deflump)
 		bool validTarget = false;
 		if (sc.Compare("beforebloom")) validTarget = true;
 		if (sc.Compare("scene")) validTarget = true;
-		if (sc.Compare("screen")) validTarget = true;		
+		if (sc.Compare("screen")) validTarget = true;
 		if (!validTarget)
 			sc.ScriptError("Invalid target '%s' for postprocess shader",sc.String);
 

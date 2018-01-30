@@ -1,4 +1,4 @@
-// 
+//
 //---------------------------------------------------------------------------
 //
 // Copyright(C) 2009-2016 Christoph Oelckers
@@ -159,8 +159,8 @@ bool FRenderState::ApplyShader()
 
 	glVertexAttrib4fv(VATTR_COLOR, mColor.vec);
 	glVertexAttrib4fv(VATTR_NORMAL, mNormal.vec);
-	//activeShader->muObjectColor2.Set(mObjectColor2);
 	activeShader->muObjectColor2.Set(mObjectColor2);
+	activeShader->muSpecialColorFlags.Set(mSpecialColorFlags);
 
 	activeShader->muDesaturation.Set(mDesaturation / 255.f);
 	activeShader->muFogEnabled.Set(fogset);
@@ -340,7 +340,7 @@ void FRenderState::Apply()
 		else mVertexBuffer->BindVBO();
 		mCurrentVertexBuffer = mVertexBuffer;
 	}
-	if (!gl.legacyMode) 
+	if (!gl.legacyMode)
 	{
 		ApplyShader();
 	}

@@ -313,7 +313,7 @@ public:
 	{
 		return D;
 	}
-	
+
 	bool isSlope() const
 	{
 		return !normal.XY().isZero();
@@ -487,7 +487,7 @@ enum
 	SECF_NORESPAWN		= 8,	// players can not respawn in this sector
 	SECF_FRICTION		= 16,	// sector has friction enabled
 	SECF_PUSH			= 32,	// pushers enabled
-	SECF_SILENTMOVE		= 64,	// Sector movement makes mo sound (Eternity got this so this may be useful for an extended cross-port standard.) 
+	SECF_SILENTMOVE		= 64,	// Sector movement makes mo sound (Eternity got this so this may be useful for an extended cross-port standard.)
 	SECF_DMGTERRAINFX	= 128,	// spawns terrain splash when inflicting damage
 	SECF_ENDGODMODE		= 256,	// getting damaged by this sector ends god mode
 	SECF_ENDLEVEL		= 512,	// ends level when health goes below 10
@@ -795,7 +795,7 @@ public:
 		planes[pos].Flags |= Or;
 	}
 
-	int GetPlaneLight(int pos) const 
+	int GetPlaneLight(int pos) const
 	{
 		return planes[pos].Light;
 	}
@@ -971,7 +971,7 @@ private:
 	FDynamicColormap *_ColorMap;	// [RH] Per-sector colormap
 
 public:
-	// just a helper for refactoring 
+	// just a helper for refactoring
 	FDynamicColormap *GetColorMap()
 	{
 		return _ColorMap;
@@ -1150,6 +1150,24 @@ struct side_t
 		}
 	};
 
+	enum ESpecialColorFlags
+	{
+		// Peg special colors to top/middle/bottom of sidedef
+		pegtop    =		1 << 0,
+		pegmid    =		1 << 1,
+		pegbtm    =		1 << 2,
+		// Invert special colors on top/middle/bottom of sidedef
+		fliptop   =		1 << 3,
+		flipmid   =		1 << 4,
+		flipbtm   =		1 << 5,
+		// Use only one flat special color on top/middle/bottom
+		// top special color if not inverted, bottom special color if inverted
+		// Mutually exclusive with pegging, but pegging takes precedence.
+		flattop   =		1 << 6,
+		flatmid   =		1 << 7,
+		flatbtm   =		1 << 8
+	};
+
 	sector_t*	sector;			// Sector the SideDef is facing.
 	DBaseDecal*	AttachedDecals;	// [RH] Decals bound to the wall
 	part		textures[3];
@@ -1158,6 +1176,7 @@ struct side_t
 	uint16_t	TexelLength;
 	int16_t		Light;
 	uint8_t		Flags;
+	uint16_t		SpecialColorFlags;
 	int			UDMFIndex;		// needed to access custom UDMF fields which are stored in loading order.
 	FLightNode * lighthead;		// all dynamic lights that may affect this wall
 
@@ -1181,7 +1200,7 @@ struct side_t
 	{
 		textures[which].xOffset = offset;;
 	}
-	
+
 	void SetTextureXOffset(double offset)
 	{
 		textures[top].xOffset =
@@ -1259,6 +1278,21 @@ struct side_t
 	void MultiplyTextureYScale(int which, double delta)
 	{
 		textures[which].yScale *= delta;
+	}
+
+	void SetSpecialColorFlags(int flags)
+	{
+		// Make peg<part> take precedence - peg<part> and flat<part> are mutually exclusive
+		if (flags & pegtop & flattop) flags ^= flattop;
+		if (flags & pegmid & flatmid) flags ^= flatmid;
+		if (flags & pegbtm & flatbtm) flags ^= flatbtm;
+
+		SpecialColorFlags = flags;
+	}
+
+	uint16_t GetSpecialColorFlags() const
+	{
+		return SpecialColorFlags;
 	}
 
 	DInterpolation *SetInterpolation(int position);
@@ -1378,7 +1412,7 @@ struct seg_t
 {
 	vertex_t*	v1;
 	vertex_t*	v2;
-	
+
 	side_t* 	sidedef;
 	line_t* 	linedef;
 
@@ -1439,7 +1473,7 @@ struct subsector_t
 };
 
 
-	
+
 
 //
 // BSP node.

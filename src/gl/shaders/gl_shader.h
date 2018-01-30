@@ -1,4 +1,4 @@
-// 
+//
 //---------------------------------------------------------------------------
 //
 // Copyright(C) 2004-2016 Christoph Oelckers
@@ -279,6 +279,7 @@ class FShader
 	FUniform4f muGlowTopPlane;
 	FUniform4f muSplitBottomPlane;
 	FUniform4f muSplitTopPlane;
+	FBufferedUniform1i muSpecialColorFlags;
 	FUniform4f muClipLine;
 	FBufferedUniform1f muInterpolationFactor;
 	FBufferedUniform1f muClipHeight;
@@ -287,7 +288,7 @@ class FShader
 	FBufferedUniform1i muViewHeight;
 	FBufferedUniform2f muSpecularMaterial;
 	FBufferedUniform1f muTimer;
-	
+
 	int lights_index;
 	int projectionmatrix_index;
 	int viewmatrix_index;
@@ -363,7 +364,7 @@ class FShaderCollection
 
 	void Clean();
 	void CompileShaders(EPassType passType);
-	
+
 public:
 	FShaderCollection(EPassType passType);
 	~FShaderCollection();
